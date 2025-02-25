@@ -18,7 +18,8 @@ Path(TEMPLATES).mkdir(exist_ok=True)
 Path(STATIC_FILES).mkdir(exist_ok=True)
 app = Flask(
         __name__, 
-        static_folder=STATIC_FILES, 
+        static_folder=STATIC_FILES,
+        static_url_path='',
         template_folder=TEMPLATES
     )
 

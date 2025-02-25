@@ -7,52 +7,11 @@
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
-    <!-- <h1>HELLO!</h1> -->
     <div class="container"></div>
     <form id="form">
         <input type="text" name="prompt">
         <button class="btn">Submit</button>
-        <script>
-            const form = document.querySelector('#form');
-            form.addEventListener('submit', function(e){
-                e.preventDefault();
-                
-                const prompt = form.elements.prompt.value
-                form.elements.prompt.value = ''
-
-                // TODO study some JS...
-                // TODO i barely understand this
-                fetch('/palette', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({
-                        prompt: prompt
-                    })
-                })
-                .then((response) => response.json())
-                .then(data => {
-                    const colors = data.colors;
-                    const container = document.querySelector('.container');
-                    container.innerHTML = '';
-                    for(const color of colors) {
-                        const div = document.createElement('div')
-                        div.classList.add('color')
-                        div.style.backgroundColor = color;
-                        div.style.width = `calc(100%/ ${colors.length}`;
-                        div.addEventListener('click', function(){
-                            navigator.clipboard.writeText(color);
-                        });
-                        const span = document.createElement('span');
-                        span.innerText = color;
-                        div.appendChild(span);
-                        container.appendChild(div);
-                    }
-                });
-                // end fetch
-            });
-        </script>
     </form>
+    <script src="app.js"></script>
 </body>
 </html>

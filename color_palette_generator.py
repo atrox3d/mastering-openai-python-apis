@@ -25,10 +25,7 @@ def palette():
     return {'colors': get_color_palette(client, prompt)}
 
 
-
-@app.get('/')
-def index():
-    # return render_template('index.html')
+def get_funny_word(client:openai.OpenAI) -> str:
     app.logger.info('generating funny word')
     rag_words = ', '.join(WORDLIST)
     
@@ -46,6 +43,13 @@ def index():
     
     app.logger.info(f'{funnyword = }')
     app.logger.info(f'{WORDLIST = }')
+    return funnyword
+
+
+@app.get('/')
+def index():
+    # return render_template('index.html')
+    funnyword = get_funny_word(client)
     return f'ChatGPT says: {funnyword}'
 
 if __name__ == "__main__":

@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        h1 {
+            color: purple;
+        }
+        
+    </style>
 </head>
 <body>
     <h1>HELLO!</h1>
@@ -30,9 +36,9 @@
                     })
                 })
                 .then((response) => response.json())
-                // vscode simple browser does not show dev tools
-                // so i add a p
                 .then(data => {
+                    // vscode simple browser does not show dev tools
+                    // so i add a p to debug
                     console.log('submit event');
                     p = document.createElement('p');
                     p.textContent = JSON.stringify(data, null, 2);

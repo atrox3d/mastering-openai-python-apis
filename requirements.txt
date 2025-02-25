@@ -3,3 +3,4 @@ openai
 ipykernel
 ipynb
 flask
+dotenv

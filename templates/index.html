@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        html, body {
+            margin: 0;
+        }
         h1 {
             color: purple;
         }
@@ -16,6 +19,44 @@
         }
         .color {
             height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            cursor: pointer;
+            transition: 0.2s opacity;
+        }
+        .color:active {
+            opacity: 0.8;
+        }
+        .color span {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-shadow: 1px 1px black;
+        }
+        #form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #form input[type='text']{
+            font-size: 1rem;
+            outline: 0;
+            border: 2px solid;
+            background-color: #f2f2f2;
+            padding: 10px;
+            width: 250px;
+        }
+        .btn {
+            background-color: #4caf50;
+            padding: 10px;
+            font-size: 1rem;
+            color: white;
+            border: 2px solid white;
+        }
+        .btn:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -24,7 +65,7 @@
     <div class="container"></div>
     <form id="form">
         <input type="text" name="prompt">
-        <button>Submit</button>
+        <button class="btn">Submit</button>
         <script>
             const form = document.querySelector('#form');
             form.addEventListener('submit', function(e){
@@ -46,13 +87,6 @@
                 })
                 .then((response) => response.json())
                 .then(data => {
-                    // vscode simple browser does not show dev tools
-                    // so i add a p to debug
-                    // console.log('submit event');
-                    // p = document.createElement('p');
-                    // p.textContent = JSON.stringify(data, null, 2);
-                    // form.appendChild(p);
-                    
                     const colors = data.colors;
                     const container = document.querySelector('.container');
                     container.innerHTML = '';
@@ -61,8 +95,13 @@
                         div.classList.add('color')
                         div.style.backgroundColor = color;
                         div.style.width = `calc(100%/ ${colors.length}`;
-                        
-                        container.appendChild(div)
+                        div.addEventListener('click', function(){
+                            navigator.clipboard.writeText(color);
+                        });
+                        const span = document.createElement('span');
+                        span.innerText = color;
+                        div.appendChild(span);
+                        container.appendChild(div);
                     }
                 });
                 // end fetch

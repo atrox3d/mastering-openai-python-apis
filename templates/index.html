@@ -6,6 +6,41 @@
     <title>Document</title>
 </head>
 <body>
-    hello from index
+    <h1>HELLO!</h1>
+    <form id="form">
+        <input type="text" name="prompt">
+        <button>Submit</button>
+        <script>
+            const form = document.querySelector('#form');
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+                
+                const prompt = form.elements.prompt.value
+                form.elements.prompt.value = ''
+
+                // TODO study some JS...
+                // TODO i barely understand this
+                fetch('/palette', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        prompt: prompt
+                    })
+                })
+                .then((response) => response.json())
+                // vscode simple browser does not show dev tools
+                // so i add a p
+                .then(data => {
+                    console.log('submit event');
+                    p = document.createElement('p');
+                    p.textContent = 'data:' + data.colors;
+                    form.appendChild(p);
+                })
+                // end fetch
+            });
+        </script>
+    </form>
 </body>
 </html>

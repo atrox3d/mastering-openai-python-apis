@@ -19,12 +19,6 @@ app = Flask(__name__, template_folder=TEMPLATES)
 WORDLIST = ['example']
 
 
-@app.post('/palette')
-def palette():
-    prompt = request.form.get('prompt')
-    return {'colors': get_color_palette(client, prompt)}
-
-
 def get_funny_word(client:openai.OpenAI) -> str:
     app.logger.info('generating funny word')
     rag_words = ', '.join(WORDLIST)
@@ -46,9 +40,20 @@ def get_funny_word(client:openai.OpenAI) -> str:
     return funnyword
 
 
+@app.post('/palette')
+def palette():
+    prompt = request.form.get('prompt')
+    app.logger.info(f'{prompt = }')
+    response =  {'colors': get_color_palette(client, prompt)}
+    app.logger.info(f'{response = }')
+    return response
+
+
 @app.get('/')
 def index():
     # return render_template('index.html')
+    return render_template('index.html')
+
     funnyword = get_funny_word(client)
     return f'ChatGPT says: {funnyword}'
 

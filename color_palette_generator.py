@@ -35,7 +35,8 @@ def index():
     
     prompt = f'''
         give me a random funny word not present in this list: "{rag_words}"
-        desired output: funnyword
+        - use timestamp to randomize word generation
+        - desired output: only the funnyword, nothing else
         '''
     app.logger.info(prompt)
     funnyword = get_llm_response(

@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import openai
 from dotenv import load_dotenv
@@ -49,12 +50,16 @@ def get_funny_word(client:openai.OpenAI) -> str:
 
 @app.post('/palette')
 def palette():
-    prompt = request.form.get('prompt')
-    app.logger.info(f'{prompt = }')
-    response =  {'colors': get_color_palette(client, prompt)}
-    app.logger.info(f'{response = }')
-    return response
-
+    try:
+        prompt = request.form.get('prompt')
+        app.logger.info(f'{prompt = }')
+        colors = get_color_palette(client, prompt)
+        response =  {'colors': colors}
+        app.logger.info(f'{response = }')
+        return response
+    except json.JSONDecodeError as jde:
+        app.logger.error(f'{prompt = }')
+        return {'colors':[]}
 
 @app.get('/')
 def index():

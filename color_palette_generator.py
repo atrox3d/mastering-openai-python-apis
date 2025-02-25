@@ -13,8 +13,14 @@ load_dotenv()
 client = openai.OpenAI()
 
 TEMPLATES = 'templates'
+STATIC_FILES = 'static'
 Path(TEMPLATES).mkdir(exist_ok=True)
-app = Flask(__name__, template_folder=TEMPLATES)
+Path(STATIC_FILES).mkdir(exist_ok=True)
+app = Flask(
+        __name__, 
+        static_folder=STATIC_FILES, 
+        template_folder=TEMPLATES
+    )
 
 WORDLIST = ['example']
 

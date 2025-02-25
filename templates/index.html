@@ -35,7 +35,7 @@
                 .then(data => {
                     console.log('submit event');
                     p = document.createElement('p');
-                    p.textContent = 'data:' + data.colors;
+                    p.textContent = JSON.stringify(data, null, 2);
                     form.appendChild(p);
                 })
                 // end fetch

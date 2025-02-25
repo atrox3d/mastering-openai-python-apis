@@ -14,24 +14,23 @@ client = openai.OpenAI()
 
 TEMPLATES = 'templates'
 Path(TEMPLATES).mkdir(exist_ok=True)
+app = Flask(__name__, template_folder=TEMPLATES)
 
-app = Flask(
-    __name__,
-    template_folder=TEMPLATES
-)
+WORDLIST = ['example']
+
 
 @app.post('/palette')
 def palette():
-    ...
+    prompt = request.form.get('prompt')
+    return {'colors': get_color_palette(client, prompt)}
 
 
-wordlist = ['example']
 
 @app.get('/')
 def index():
     # return render_template('index.html')
     app.logger.info('generating funny word')
-    rag_words = ', '.join(wordlist)
+    rag_words = ', '.join(WORDLIST)
     
     prompt = f'''
         give me a random funny word not present in this list: "{rag_words}"
@@ -43,9 +42,10 @@ def index():
         client, 
         prompt
     )
-    wordlist.append(funnyword)
+    WORDLIST.append(funnyword)
     
     app.logger.info(f'{funnyword = }')
+    app.logger.info(f'{WORDLIST = }')
     return f'ChatGPT says: {funnyword}'
 
 if __name__ == "__main__":

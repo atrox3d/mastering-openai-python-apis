@@ -88,6 +88,13 @@ def ask(*messages:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs)
     return reply
 
 
+COMMANDS = '/history'.split()
+def command(prompt:str, commands=COMMANDS):
+    if any(prompt.startswith(cmd) for cmd in commands):
+        return True
+    return False
+
+
 def setup_history(
         history     :list,
         system      :str = None,
@@ -124,6 +131,9 @@ def main(
         
         while True:
             prompt = user_input(user_prompt)
+            # if command(prompt):
+                # continue
+            
             if proceed(prompt):
                 
                 history.append(user_message(prompt))

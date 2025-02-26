@@ -7,12 +7,12 @@ from helpers import defaults
 from helpers.openai import (
         check_openai_key,
         message,
-        system_message,
-        dev_message,
         user_message,
-        assistant_message
+        assistant_message,
+        ask,
+        get_message_content,
+        setup_history,
 )
-from helpers.openai import ask
 
 
 def user_input(prompt:str='You: ') -> str:
@@ -26,11 +26,6 @@ def proceed(
 ) -> bool:
     '''check if user wants to stop'''
     return prompt.lower() not in stop_commands
-
-
-def get_message_content(completion:ChatCompletion) -> str:
-    content = completion.choices[0].message.content
-    return content
 
 
 def process_answer(reply:ChatCompletion):
@@ -57,24 +52,6 @@ def command(prompt:str, commands:dict=COMMANDS, **kwargs):
 #
 #   TODO: find a way to run commands with params or globals
 #
-
-
-def setup_history(
-        history     :list,
-        system      :str = None,
-        developer   :str = None,
-        personality :str = None
-) -> list:
-    if system is not None:
-        print(f'adding system message: {system}')
-        history.append(system_message(system))
-    if developer is not None:
-        print(f'adding developer message: {developer}')
-        history.append(dev_message(developer))
-    if personality is not None:
-        history.append(system_message(f'your personality is {personality}'))
-        print(f'adding personality: {personality}')
-    return history
 
 
 def main(

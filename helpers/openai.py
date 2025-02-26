@@ -55,6 +55,29 @@ def assistant_message(content:str) -> dict:
     return message('assistant', content)
 
 
+def get_message_content(completion:ChatCompletion) -> str:
+    content = completion.choices[0].message.content
+    return content
+
+
+def setup_history(
+        history     :list,
+        system      :str = None,
+        developer   :str = None,
+        personality :str = None
+) -> list:
+    if system is not None:
+        print(f'adding system message: {system}')
+        history.append(system_message(system))
+    if developer is not None:
+        print(f'adding developer message: {developer}')
+        history.append(dev_message(developer))
+    if personality is not None:
+        history.append(system_message(f'your personality is {personality}'))
+        print(f'adding personality: {personality}')
+    return history
+
+
 def ask(
         *messages   :str,
         client      :openai.OpenAI = get_client(),

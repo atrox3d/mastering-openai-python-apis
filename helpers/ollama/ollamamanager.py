@@ -17,7 +17,10 @@ def start_remote_ollama(host):
         # client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(host)
         # Execute a command
-        stdin, stdout, stderr = client.exec_command('bin/ollama-start')
+        stdin, stdout, stderr = client.exec_command(
+            '/usr/local/bin/ollama serve &',
+            timeout=2
+            )
         exit_status = stdout.channel.recv_exit_status()
 
         # Read the output

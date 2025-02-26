@@ -79,7 +79,6 @@ def process_answer(reply:ChatCompletion):
 
 def ask(*messages:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs) -> ChatCompletion:
     '''query openai llm and returns full reply'''
-    print(f'{messages = }')
     reply = client.chat.completions.create(
         messages=messages,
         model=model,

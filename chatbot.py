@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import openai
+from openai.types.chat.chat_completion import ChatCompletion
 from dotenv import load_dotenv
 
 
@@ -25,7 +26,7 @@ def check_openai_key(dotenv:str=DOTENV, apikey_env_var:str=APIKEY_ENV_VAR) -> bo
     return True
 
 
-def get_client():
+def get_client() -> openai.OpenAI:
     global CLIENT
     CLIENT = CLIENT or openai.OpenAI()
     return CLIENT
@@ -35,7 +36,7 @@ def message(role:str, content:str) -> dict:
     return {'role': role, 'content': content}
 
 
-def ask(prompt:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs):
+def ask(prompt:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs) -> ChatCompletion:
     reply = client.chat.completions.create(
         messages=[message('user', prompt)],
         model=model
@@ -43,17 +44,30 @@ def ask(prompt:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs):
     return reply
 
 
+def get_question(prompt:str='You: ') -> str:
+    return input(prompt)
+
+
+def proceed(prompt:str, STOP_COMMANDS:list[str]='bye stop end quit abort'.split()) -> bool:
+    return prompt.lower() not in STOP_COMMANDS
+
+
+def output(reply:ChatCompletion):
+    answer = reply.choices[0].message.content
+    print(f'Bot: {answer}')
+
+
 def main():
     if not check_openai_key():
         exit(1)
     try:
         while True:
-            prompt = input('You: ')
-            if prompt.lower() == 'bye':
+            prompt = get_question()
+            if proceed(prompt):
+                reply = ask(prompt)
+                output(reply)
+            else:
                 break
-            reply = ask(prompt)
-            # print(json.dumps(reply, indent=4))
-            print(reply.choices[0].message.content)
     except KeyboardInterrupt:
         pass
     finally:

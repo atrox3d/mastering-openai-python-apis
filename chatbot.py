@@ -5,7 +5,7 @@ import typer
 
 from helpers import defaults
 from helpers.commands import command
-from helpers.openai import (
+from helpers.openai.chat import (
         check_openai_key,
         message,
         user_message,

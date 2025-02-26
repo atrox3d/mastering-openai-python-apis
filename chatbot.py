@@ -7,20 +7,20 @@ from openai.types.chat.chat_completion import ChatCompletion
 from dotenv import load_dotenv
 import typer
 
+from helpers import defaults
 
-MODEL = 'gpt-4o-mini'
-DOTENV = '.env'
-APIKEY_ENV_VAR = 'OPENAI_API_KEY'
 CLIENT = None
-STOP_COMMANDS = 'bye stop end quit abort exit'.split()
 
 
-def check_openai_key(dotenv_path:str=DOTENV, apikey_env_var:str=APIKEY_ENV_VAR) -> bool:
+def check_openai_key(
+        dotenv_path     :str = defaults.DOTENV, 
+        apikey_env_var  :str = defaults.APIKEY_ENV_VAR
+) -> bool:
     '''loads .env if present and check for apikey env var'''
     load_dotenv(dotenv_path)
-    api_key = os.getenv(APIKEY_ENV_VAR)
+    api_key = os.getenv(apikey_env_var)
     if api_key is None:
-        print(f'missing env variable {APIKEY_ENV_VAR}')
+        print(f'missing env variable {apikey_env_var}')
         if not Path(dotenv_path).exists():
             print('and no .env file found')
         print('exiting')
@@ -62,7 +62,10 @@ def user_input(prompt:str='You: ') -> str:
     return input(prompt)
 
 
-def proceed(prompt:str, stop_commands:list[str]=STOP_COMMANDS) -> bool:
+def proceed(
+        prompt          :str, 
+        stop_commands   :list[str] = defaults.STOP_COMMANDS
+) -> bool:
     '''check if user wants to stop'''
     return prompt.lower() not in stop_commands
 
@@ -78,7 +81,12 @@ def process_answer(reply:ChatCompletion):
     print(f'Bot: {answer}')
 
 
-def ask(*messages:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs) -> ChatCompletion:
+def ask(
+        *messages   :str, 
+        client      :openai.OpenAI = get_client(), 
+        model       :str           = defaults.MODEL, 
+        **kwargs
+) -> ChatCompletion:
     '''query openai llm and returns full reply'''
     reply = client.chat.completions.create(
         messages=messages,
@@ -127,9 +135,9 @@ def setup_history(
 
 
 def main(
-        model       :str = MODEL, 
-        dotenv_path :str = DOTENV,
-        apikey_env  :str = APIKEY_ENV_VAR,
+        model       :str = defaults.MODEL, 
+        dotenv_path :str = defaults.DOTENV,
+        apikey_env  :str = defaults.APIKEY_ENV_VAR,
         user_prompt :str = 'You: ',
         personality :str = None,
         system      :str = None,

@@ -4,3 +4,4 @@ ipykernel
 ipynb
 flask
 dotenv
+typer

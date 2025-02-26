@@ -5,6 +5,7 @@ from pathlib import Path
 import openai
 from openai.types.chat.chat_completion import ChatCompletion
 from dotenv import load_dotenv
+import typer
 
 
 MODEL = 'gpt-4o-mini'
@@ -112,4 +113,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    app = typer.Typer(add_completion=False)
+    app.command('main')(main)
+    app()

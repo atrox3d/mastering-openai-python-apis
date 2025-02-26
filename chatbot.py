@@ -11,6 +11,7 @@ MODEL = 'gpt-4o-mini'
 DOTENV = '.env'
 APIKEY_ENV_VAR = 'OPENAI_API_KEY'
 CLIENT = None
+STOP_COMMANDS = 'bye stop end quit abort'.split()
 
 
 def check_openai_key(dotenv:str=DOTENV, apikey_env_var:str=APIKEY_ENV_VAR) -> bool:
@@ -43,7 +44,8 @@ def ask(prompt:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs) ->
     '''query openai llm and returns full reply'''
     reply = client.chat.completions.create(
         messages=[message('user', prompt)],
-        model=model
+        model=model,
+        **kwargs
     )
     return reply
 
@@ -53,9 +55,9 @@ def user_input(prompt:str='You: ') -> str:
     return input(prompt)
 
 
-def proceed(prompt:str, STOP_COMMANDS:list[str]='bye stop end quit abort'.split()) -> bool:
+def proceed(prompt:str, stop_commands:list[str]=STOP_COMMANDS) -> bool:
     '''check if user wants to stop'''
-    return prompt.lower() not in STOP_COMMANDS
+    return prompt.lower() not in stop_commands
 
 
 def process_answer(reply:ChatCompletion):

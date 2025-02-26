@@ -10,7 +10,7 @@ from . import tracelogger
 logger = tracelogger.getLogger(__name__)
 
 
-def start_remote_ollama(host):
+def __DONTUSE_start_remote_ollama(host):
     try:
         client = paramiko.SSHClient()
         client.load_system_host_keys()

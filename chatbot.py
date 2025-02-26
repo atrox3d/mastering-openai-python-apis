@@ -15,13 +15,13 @@ CLIENT = None
 STOP_COMMANDS = 'bye stop end quit abort exit'.split()
 
 
-def check_openai_key(dotenv:str=DOTENV, apikey_env_var:str=APIKEY_ENV_VAR) -> bool:
+def check_openai_key(dotenv_path:str=DOTENV, apikey_env_var:str=APIKEY_ENV_VAR) -> bool:
     '''loads .env if present and check for apikey env var'''
-    load_dotenv()
+    load_dotenv(dotenv_path)
     api_key = os.getenv(APIKEY_ENV_VAR)
     if api_key is None:
         print(f'missing env variable {APIKEY_ENV_VAR}')
-        if not Path(dotenv).exists():
+        if not Path(dotenv_path).exists():
             print('and no .env file found')
         print('exiting')
         return False
@@ -88,18 +88,46 @@ def ask(*messages:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs)
     return reply
 
 
-def main():
+def setup_history(
+        history     :list,
+        system      :str = None,
+        developer   :str = None,
+        personality :str = None
+) -> list:
+    if system is not None:
+        print(f'adding system message: {system}')
+        history.append(system_message(system))
+    if developer is not None:
+        print(f'adding developer message: {developer}')
+        history.append(dev_message(developer))
+    if personality is not None:
+        history.append(system_message(f'your personality is {personality}'))
+        print(f'adding personality: {personality}')
+    return history
+
+
+def main(
+        model       :str = MODEL, 
+        dotenv_path :str = DOTENV,
+        apikey_env  :str = APIKEY_ENV_VAR,
+        user_prompt :str = 'You: ',
+        personality :str = None,
+        system      :str = None,
+        developer   :str = None,
+):
     '''main entry, will be wrapped in typer'''
-    if not check_openai_key():
+    if not check_openai_key(dotenv_path, apikey_env):
         exit(1)
     try:
         history = []
+        setup_history(history, system, developer, personality)
+        
         while True:
-            prompt = user_input()
+            prompt = user_input(user_prompt)
             if proceed(prompt):
                 
                 history.append(user_message(prompt))
-                reply = ask(*history)
+                reply = ask(*history, model=model)
                 history.append(assistant_message(get_message_content(reply)))
                 
                 process_answer(reply)

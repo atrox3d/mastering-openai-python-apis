@@ -14,5 +14,4 @@ def test_chat():
         client=chat.get_client(HOST, defaults.PORT),
         model='llama3.2'
     ))
-    # print(chat.get_message_content(reply))
-    print(reply.message.content)
+    print(chat.get_message_content(reply))

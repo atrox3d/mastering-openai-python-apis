@@ -39,10 +39,7 @@ def assistant_message(content:str) -> dict:
 
 
 def get_message_content(completion:ollama.ChatResponse) -> str:
-    content = completion
-    # choices[0].message.content
-    return content
-
+    return completion.message.content
 
 def setup_history(
         history     :list,

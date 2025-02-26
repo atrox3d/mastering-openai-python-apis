@@ -2,10 +2,42 @@ import subprocess
 import socket
 import time
 
-import defaults
+import paramiko
+
+from . import defaults
 from . import tracelogger
 
 logger = tracelogger.getLogger(__name__)
+
+
+def start_remote_ollama(host):
+    try:
+        client = paramiko.SSHClient()
+        client.load_system_host_keys()
+        # client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(host)
+        # Execute a command
+        stdin, stdout, stderr = client.exec_command('bin/ollama-start')
+        exit_status = stdout.channel.recv_exit_status()
+
+        # Read the output
+        output = stdout.read().decode('utf-8')
+        error = stderr.read().decode('utf-8')
+
+        print("Output:", output)
+        print("Error:", error)
+        print("Exit Status:", exit_status)
+
+    except paramiko.AuthenticationException:
+        print("Authentication failed.")
+    except paramiko.SSHException as e:
+        print(f"SSH error: {e}")
+    except Exception as e:
+        print(f"General error: {e}")
+    finally:
+        if client:
+            client.close()
+    
 
 
 def is_server_ready(host, port):

@@ -4,3 +4,4 @@ ENDPOINT        :str   = 'api/generate'
 URL             :str   = f'http://{HOST}:{PORT}/{ENDPOINT}'
 WAIT_SECONDS    :float = .1
 ATTEMPTS        :int   = 10
+MODEL           :str   = 'llama3.2'

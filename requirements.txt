@@ -6,3 +6,4 @@ flask
 dotenv
 typer
 paramiko
+ollama

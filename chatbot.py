@@ -40,10 +40,26 @@ def message(role:str, content:str) -> dict:
     return {'role': role, 'content': content}
 
 
+def user_message(content:str) -> dict:
+    return message('user', content)
+
+
+def system_message(content:str) -> dict:
+    return message('system', content)
+
+
+def dev_message(content:str) -> dict:
+    return message('developer', content)
+
+
+def assistant_message(content:str) -> dict:
+    return message('assistant', content)
+
+
 def ask(prompt:str, client:openai.OpenAI=get_client(), model=MODEL, **kwargs) -> ChatCompletion:
     '''query openai llm and returns full reply'''
     reply = client.chat.completions.create(
-        messages=[message('user', prompt)],
+        messages=[user_message(prompt)],
         model=model,
         **kwargs
     )

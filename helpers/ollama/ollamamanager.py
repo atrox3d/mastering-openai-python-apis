@@ -10,6 +10,7 @@ from . import tracelogger
 logger = tracelogger.getLogger(__name__)
 
 
+# ///////////////////////////////////////////////////////////////////////
 def __DONTUSE_start_remote_ollama(host):
     try:
         client = paramiko.SSHClient()
@@ -40,7 +41,11 @@ def __DONTUSE_start_remote_ollama(host):
     finally:
         if client:
             client.close()
-    
+# ///////////////////////////////////////////////////////////////////////
+
+
+class RemoteOllamaServiceException(Exception):
+    ...
 
 
 def is_server_ready(host, port):
@@ -83,8 +88,9 @@ def start_ollama(
         logger.info('starting ollama server...')
         completed = subprocess.run('ollama serve > /dev/null 2>&1 &', shell=True, check=True)
     else:
-        logger.warning('cannot start REMOTE ollama server')
+        logger.critical('cannot start REMOTE ollama server')
         completed = None
+        raise RemoteOllamaServiceException
         
     logger.info(f'checking if the {get_server(host, port)} is up...')
     wait_for_server(host, port, wait, attempts)
@@ -94,7 +100,7 @@ def start_ollama(
 
 def stop_ollama(
     host: str = defaults.HOST, 
-    port=11434,
+    port: int = defaults.PORT,
 ):
     if is_local(host):
         '''stop ollama server'''
@@ -103,6 +109,8 @@ def stop_ollama(
     else:
         logger.warning(f'cannot stop REMOTE ollama server {get_server(host, port)}')
         completed = None
+        raise RemoteOllamaServiceException
+
     return completed
 
 

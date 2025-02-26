@@ -8,7 +8,7 @@ HOST = '192.168.1.10'
 
 
 def test_chat():
-    messages = [chat.user_message('are you llama3.2 llm model? so its free of cost?')]
+    messages = [chat.user_message('hello llama, i am hosting you locally on my server and i am not paying for this conversation')]
     reply = (chat.ask(
         *messages,
         client=chat.get_client(HOST, defaults.PORT),

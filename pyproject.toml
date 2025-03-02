@@ -1,0 +1,15 @@
+[project]
+name = "mastering-openai-python-apis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "flask>=3.1.0",
+    "ipykernel>=6.29.5",
+    "ipynb>=0.5.1",
+    "openai>=1.65.2",
+    "python-dotenv>=1.0.1",
+    "typer>=0.15.2",
+]

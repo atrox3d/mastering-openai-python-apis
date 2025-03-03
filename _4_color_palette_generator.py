@@ -3,7 +3,7 @@ from pathlib import Path
 import openai
 from dotenv import load_dotenv
 from flask import Flask, render_template, request
-from ipynb.fs.defs.color_palette_generator import (
+from ipynb.fs.defs._4_color_palette_generator import (
     get_llm_response,
     get_color_palette,
     get_colors_prompt
@@ -60,6 +60,8 @@ def palette():
     except json.JSONDecodeError as jde:
         app.logger.error(f'{prompt = }')
         return {'colors':[]}
+    except openai.RateLimitError as rle:
+        app.logger.error('give some money to openai!!!!')
 
 @app.get('/')
 def index():

@@ -1,6 +1,6 @@
 import pickle
 import pandas as pd
-from helpers.notebook.defaults import CACHE_PATH
+from .defaults import CACHE_PATH
 
 
 from pathlib import Path

@@ -1,8 +1,3 @@
-# load_dotenv()
-# client = openai.OpenAI()
-# embed_client = ollama.Client()
-
-
 import time
 
 

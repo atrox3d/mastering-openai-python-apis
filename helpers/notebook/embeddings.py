@@ -2,9 +2,9 @@ import numpy as np
 from typing import List
 import pandas as pd
 from scipy import spatial
-from helpers.notebook.cache import get_cache, save_cache
-from helpers.notebook.decorators import retry
-from helpers.notebook.defaults import EMBEDDING_MODEL
+from .cache import get_cache, save_cache
+from .decorators import retry
+from .defaults import EMBEDDING_MODEL
 
 
 import ollama

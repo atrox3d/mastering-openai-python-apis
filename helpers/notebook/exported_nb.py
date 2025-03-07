@@ -8,15 +8,19 @@ from helpers.notebook.decorators import retry
 from helpers.notebook.cache import get_cache
 from helpers.notebook.embeddings import distances_from_embeddings, embedding_from_text, indices_of_nearest_neighbors_from_distances
 
-
 from .defaults import (
     DATA_PATH,
     INPUT_FILE,
     OUTPUT_FILE,
     INPUT_PATH,
     EMBEDDING_MODEL,
-
 )
+
+
+# load_dotenv()
+# client = openai.OpenAI()
+# embed_client = ollama.Client()
+
 
 @retry(wait=.5)
 def test_retry(attempts:int=0, max_retries=5):

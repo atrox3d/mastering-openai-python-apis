@@ -1,0 +1,7 @@
+DATA_PATH = 'data'
+INPUT_FILE = 'all-movie-plots.csv'
+OUTPUT_FILE = 'movie-plots.csv'
+INPUT_PATH = f'{DATA_PATH}/{INPUT_FILE}'
+OUTPUT_PATH = f'{DATA_PATH}/{OUTPUT_FILE}'
+EMBEDDING_MODEL = 'mxbai-embed-large:latest'
+CACHE_PATH = f'{DATA_PATH}/cache.pkl'
